@@ -1,0 +1,109 @@
+{
+  "agent_name": "Compliance Coordinator Agent",
+  "agent_id": "6967c339f038ff7259fe2ace",
+  "test_message": "Run a complete compliance check for Portfolio ABC. Extract rules, validate portfolio, and provide remediation recommendations.",
+  "expected_purpose": "manager",
+  "timestamp": "2026-01-14T16:29:30.500026",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "success",
+    "result": {
+      "compliance_dashboard": {
+        "overall_status": "breaches_detected",
+        "compliance_score": 85,
+        "summary": {
+          "total_rules_extracted": 13,
+          "total_rules_checked": 13,
+          "total_breaches": 5,
+          "hard_breaches": 2,
+          "soft_breaches": 3,
+          "remediation_actions_recommended": 5
+        },
+        "extracted_rules_summary": {
+          "total_extracted": 13,
+          "ambiguous_rules_flagged": 3,
+          "confidence_score": 0.8
+        },
+        "breach_details": [
+          {
+            "breach_id": "BR001",
+            "severity": "soft_breach",
+            "description": "Total return underperformed the Custom Account Benchmark by 40 bps gross of fees per annum over the last full market cycle.",
+            "current_value": -0.4,
+            "threshold_value": 0.6,
+            "excess_amount": -1.0,
+            "remediation_priority": "medium",
+            "recommended_actions": [
+              "Review and rebalance allocation relative to benchmark. Enhance research process and active positions."
+            ]
+          },
+          {
+            "breach_id": "BR002",
+            "severity": "soft_breach",
+            "description": "Long-term ex-ante tracking error exceeded 150 bps p.a. (actual: 170 bps).",
+            "current_value": 1.7,
+            "threshold_value": 1.5,
+            "excess_amount": 0.2,
+            "remediation_priority": "high",
+            "recommended_actions": [
+              "Reduce benchmark-divergent exposures. Increase core holdings alignment."
+            ]
+          },
+          {
+            "breach_id": "BR003",
+            "severity": "hard_breach",
+            "description": "Position held in security present on the ESG exclusion list (ABC Corp 3.5% 2029, $700,000).",
+            "current_value": 700000,
+            "threshold_value": 0,
+            "excess_amount": 700000,
+            "remediation_priority": "immediate",
+            "recommended_actions": [
+              "Sell ABC Corp 3.5% 2029 immediately. Patch ESG screening workflows."
+            ]
+          },
+          {
+            "breach_id": "BR004",
+            "severity": "hard_breach",
+            "description": "Direct holding in a Goldman Sachs affiliate security (Goldman Sachs Group 2.625% 2031, $1,000,000).",
+            "current_value": 1000000,
+            "threshold_value": 0,
+            "excess_amount": 1000000,
+            "remediation_priority": "immediate",
+            "recommended_actions": [
+              "Sell GS Group 2.625% 2031 position immediately. Strengthen issuer compliance checks."
+            ]
+          },
+          {
+            "breach_id": "BR005",
+            "severity": "soft_breach",
+            "description": "Settled date cash exceeds 10% of portfolio value (current: 12.3%).",
+            "current_value": 0.123,
+            "threshold_value": 0.1,
+            "excess_amount": 0.023,
+            "remediation_priority": "high",
+            "recommended_actions": [
+              "Swiftly reinvest excess cash to bring below 10%. Improve cash management controls."
+            ]
+          }
+        ],
+        "remediation_summary": {
+          "immediate_actions_required": 2,
+          "estimated_total_cost": 18250,
+          "recommended_timeline": "1-7 business days depending on breach severity"
+        }
+      },
+      "workflow_execution": {
+        "rule_extraction_completed": true,
+        "compliance_check_completed": true,
+        "remediation_analysis_completed": true,
+        "errors": []
+      }
+    },
+    "metadata": {
+      "agent_name": "Compliance Coordinator Agent",
+      "timestamp": "2024-06-18T13:33:45Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"success\",\n  \"result\": {\n    \"compliance_dashboard\": {\n      \"overall_status\": \"breaches_detected\",\n      \"compliance_score\": 85,\n      \"summary\": {\n        \"total_rules_extracted\": 13,\n        \"total_rules_checked\": 13,\n        \"total_breaches\": 5,\n        \"hard_breaches\": 2,\n        \"soft_breaches\": 3,\n        \"remediation_actions_recommended\": 5\n      },\n      \"extracted_rules_summary\": {\n        \"total_extracted\": 13,\n        \"ambiguous_rules_flagged\": 3,\n        \"confidence_score\": 0.80\n      },\n      \"breach_details\": [\n        {\n          \"breach_id\": \"BR001\",\n          \"severity\": \"soft_breach\",\n          \"description\": \"Total return underperformed the Custom Account Benchmark by 40 bps gross of fees per annum over the last full market cycle.\",\n          \"current_value\": -0.40,\n          \"threshold_value\": 0.60,\n          \"excess_amount\": -1.0,\n          \"remediation_priority\": \"medium\",\n          \"recommended_actions\": [\n            \"Review and rebalance allocation relative to benchmark. Enhance research process and active positions.\"\n          ]\n        },\n        {\n          \"breach_id\": \"BR002\",\n          \"severity\": \"soft_breach\",\n          \"description\": \"Long-term ex-ante tracking error exceeded 150 bps p.a. (actual: 170 bps).\",\n          \"current_value\": 1.7,\n          \"threshold_value\": 1.5,\n          \"excess_amount\": 0.2,\n          \"remediation_priority\": \"high\",\n          \"recommended_actions\": [\n            \"Reduce benchmark-divergent exposures. Increase core holdings alignment.\"\n          ]\n        },\n        {\n          \"breach_id\": \"BR003\",\n          \"severity\": \"hard_breach\",\n          \"description\": \"Position held in security present on the ESG exclusion list (ABC Corp 3.5% 2029, $700,000).\",\n          \"current_value\": 700000,\n          \"threshold_value\": 0,\n          \"excess_amount\": 700000,\n          \"remediation_priority\": \"immediate\",\n          \"recommended_actions\": [\n            \"Sell ABC Corp 3.5% 2029 immediately. Patch ESG screening workflows.\"\n          ]\n        },\n        {\n          \"breach_id\": \"BR004\",\n          \"severity\": \"hard_breach\",\n          \"description\": \"Direct holding in a Goldman Sachs affiliate security (Goldman Sachs Group 2.625% 2031, $1,000,000).\",\n          \"current_value\": 1000000,\n          \"threshold_value\": 0,\n          \"excess_amount\": 1000000,\n          \"remediation_priority\": \"immediate\",\n          \"recommended_actions\": [\n            \"Sell GS Group 2.625% 2031 position immediately. Strengthen issuer compliance checks.\"\n          ]\n        },\n        {\n          \"breach_id\": \"BR005\",\n          \"severity\": \"soft_breach\",\n          \"description\": \"Settled date cash exceeds 10% of portfolio value (current: 12.3%).\",\n          \"current_value\": 0.123,\n          \"threshold_value\": 0.10,\n          \"excess_amount\": 0.023,\n          \"remediation_priority\": \"high\",\n          \"recommended_actions\": [\n            \"Swiftly reinvest excess cash to bring below 10%. Improve cash management controls.\"\n          ]\n        }\n      ],\n      \"remediation_summary\": {\n        \"immediate_actions_required\": 2,\n        \"estimated_total_cost\": 18250,\n        \"recommended_timeline\": \"1-7 business days depending on breach severity\"\n      }\n    },\n    \"workflow_execution\": {\n      \"rule_extraction_completed\": true,\n      \"compliance_check_completed\": true,\n      \"remediation_analysis_completed\": true,\n      \"errors\": []\n    }\n  },\n  \"metadata\": {\n    \"agent_name\": \"Compliance Coordinator Agent\",\n    \"timestamp\": \"2024-06-18T13:33:45Z\"\n  }\n}"
+}

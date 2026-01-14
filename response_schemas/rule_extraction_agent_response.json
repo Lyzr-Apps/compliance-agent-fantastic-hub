@@ -1,0 +1,52 @@
+{
+  "agent_name": "Rule Extraction Agent",
+  "agent_id": "6967c2d5f038ff7259fe2ac5",
+  "agent_purpose": "parser",
+  "description": "Extracts structured compliance rules from Investment Guideline PDFs with rule categorization, thresholds, and ambiguous language detection",
+  "response_schema": {
+    "status": "string",
+    "result": {
+      "extracted_rules": [
+        "any"
+      ],
+      "ambiguous_rules": [
+        "any"
+      ],
+      "total_rules_extracted": "number",
+      "confidence_score": "number"
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string"
+    }
+  },
+  "example_response": {
+    "status": "success",
+    "result": {
+      "extracted_rules": [],
+      "ambiguous_rules": [],
+      "total_rules_extracted": 0,
+      "confidence_score": 1.0
+    },
+    "metadata": {
+      "agent_name": "Rule Extraction Agent",
+      "timestamp": "2024-06-15T10:36:45Z"
+    }
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-01-14T16:30:17.790947",
+  "test_message_used": "Parse this sample text for testing",
+  "actual_test_response": {
+    "status": "success",
+    "result": {
+      "extracted_rules": [],
+      "ambiguous_rules": [],
+      "total_rules_extracted": 0,
+      "confidence_score": 1.0
+    },
+    "metadata": {
+      "agent_name": "Rule Extraction Agent",
+      "timestamp": "2024-06-15T10:36:45Z"
+    }
+  }
+}

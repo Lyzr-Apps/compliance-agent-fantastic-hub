@@ -1,0 +1,59 @@
+{
+  "agent_name": "Compliance Coordinator Agent",
+  "agent_id": "6967c339f038ff7259fe2ace",
+  "agent_purpose": "manager",
+  "description": "Orchestrates complete compliance workflow including rule extraction, validation, and remediation recommendations",
+  "response_schema": {
+    "status": "string (success|error)",
+    "result": {
+      "final_output": "object (aggregated result from sub-agents)",
+      "sub_agent_results": [
+        {
+          "agent_name": "string",
+          "status": "string",
+          "output": "object"
+        }
+      ],
+      "summary": "string",
+      "workflow_completed": "boolean"
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string (ISO)",
+      "sub_agents_used": [
+        "string"
+      ]
+    }
+  },
+  "example_response": {
+    "status": "success",
+    "result": {
+      "final_output": {
+        "aggregated": "data from all sub-agents"
+      },
+      "sub_agent_results": [
+        {
+          "agent_name": "Sub-Agent 1",
+          "status": "success",
+          "output": {
+            "data": "result"
+          }
+        }
+      ],
+      "summary": "All sub-agents completed successfully",
+      "workflow_completed": true
+    },
+    "metadata": {
+      "agent_name": "Compliance Coordinator Agent",
+      "timestamp": "2025-01-15T10:30:00Z",
+      "sub_agents_used": [
+        "Sub-Agent 1"
+      ]
+    }
+  },
+  "is_actual_tested": false,
+  "test_timestamp": null,
+  "test_message_used": "Process this request and coordinate sub-agents",
+  "raw_test_response": "To begin the compliance check workflow, I need you to provide the following:\n\n1. The Investment Guideline document (preferably as a PDF file).\n2. The portfolio holdings data to be validated (CSV, Excel, or clearly structured data).\n\nPlease upload or describe these documents so I can start the process by orchestrating the Rule Extraction Agent.",
+  "test_error": "Response not valid JSON: Expecting value: line 1 column 1 (char 0)"
+}

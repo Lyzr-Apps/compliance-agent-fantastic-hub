@@ -1,0 +1,61 @@
+{
+  "agent_name": "Compliance Checker Agent",
+  "agent_id": "6967c2edf038ff7259fe2ac6",
+  "agent_purpose": "analyzer",
+  "description": "Validates portfolio holdings against compliance rules and identifies breaches with severity classification",
+  "response_schema": {
+    "status": "string",
+    "result": {
+      "overall_compliance_score": "number",
+      "total_rules_checked": "number",
+      "breaches": [
+        "any"
+      ],
+      "compliant_positions": [
+        "any"
+      ],
+      "total_breaches": "number",
+      "hard_breaches": "number",
+      "soft_breaches": "number"
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string"
+    }
+  },
+  "example_response": {
+    "status": "error",
+    "result": {
+      "overall_compliance_score": 0,
+      "total_rules_checked": 0,
+      "breaches": [],
+      "compliant_positions": [],
+      "total_breaches": 0,
+      "hard_breaches": 0,
+      "soft_breaches": 0
+    },
+    "metadata": {
+      "agent_name": "Compliance Checker Agent",
+      "timestamp": "2024-06-13T08:14:23Z"
+    }
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-01-14T16:30:20.486697",
+  "test_message_used": "Analyze this sample data for testing",
+  "actual_test_response": {
+    "status": "error",
+    "result": {
+      "overall_compliance_score": 0,
+      "total_rules_checked": 0,
+      "breaches": [],
+      "compliant_positions": [],
+      "total_breaches": 0,
+      "hard_breaches": 0,
+      "soft_breaches": 0
+    },
+    "metadata": {
+      "agent_name": "Compliance Checker Agent",
+      "timestamp": "2024-06-13T08:14:23Z"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "agent_name": "Compliance Checker Agent",
+  "agent_id": "6967c2edf038ff7259fe2ac6",
+  "test_message": "Check the following portfolio holdings against compliance rules: Portfolio ABC with 45% equity allocation, 30% fixed income, 15% alternatives, 10% cash. Maximum equity limit is 40%.",
+  "expected_purpose": "analyzer",
+  "timestamp": "2026-01-14T16:26:43.013267",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "success",
+    "result": {
+      "overall_compliance_score": 75,
+      "total_rules_checked": 1,
+      "breaches": [
+        {
+          "breach_id": "breach_001",
+          "rule_id": "rule_equity_max_40",
+          "severity": "hard_breach",
+          "description": "Equity allocation exceeds the maximum allowed limit of 40%.",
+          "current_value": 45,
+          "threshold_value": 40,
+          "excess_amount": 5,
+          "affected_positions": [
+            {
+              "position_id": "position_equity",
+              "security_name": "Equity Allocation",
+              "value": 45,
+              "percentage_of_portfolio": 45
+            }
+          ]
+        }
+      ],
+      "compliant_positions": [],
+      "total_breaches": 1,
+      "hard_breaches": 1,
+      "soft_breaches": 0
+    },
+    "metadata": {
+      "agent_name": "Compliance Checker Agent",
+      "timestamp": "2024-06-09T22:38:19Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"success\",\n  \"result\": {\n    \"overall_compliance_score\": 75,\n    \"total_rules_checked\": 1,\n    \"breaches\": [\n      {\n        \"breach_id\": \"breach_001\",\n        \"rule_id\": \"rule_equity_max_40\",\n        \"severity\": \"hard_breach\",\n        \"description\": \"Equity allocation exceeds the maximum allowed limit of 40%.\",\n        \"current_value\": 45,\n        \"threshold_value\": 40,\n        \"excess_amount\": 5,\n        \"affected_positions\": [\n          {\n            \"position_id\": \"position_equity\",\n            \"security_name\": \"Equity Allocation\",\n            \"value\": 45,\n            \"percentage_of_portfolio\": 45\n          }\n        ]\n      }\n    ],\n    \"compliant_positions\": [],\n    \"total_breaches\": 1,\n    \"hard_breaches\": 1,\n    \"soft_breaches\": 0\n  },\n  \"metadata\": {\n    \"agent_name\": \"Compliance Checker Agent\",\n    \"timestamp\": \"2024-06-09T22:38:19Z\"\n  }\n}"
+}

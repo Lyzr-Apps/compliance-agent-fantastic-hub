@@ -1,0 +1,65 @@
+{
+  "agent_name": "Remediation Analyst Agent",
+  "agent_id": "6967c30af038ff7259fe2aca",
+  "agent_purpose": "analyzer",
+  "description": "Provides root cause analysis, remediation actions, trade impact estimates, and regulatory citations for compliance breaches",
+  "response_schema": {
+    "status": "string",
+    "result": {
+      "remediation_reports": [
+        "any"
+      ],
+      "summary": {
+        "total_breaches_analyzed": "number",
+        "immediate_actions_required": "number",
+        "estimated_total_remediation_cost": "number",
+        "recommended_next_steps": [
+          "string"
+        ]
+      }
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string"
+    }
+  },
+  "example_response": {
+    "status": "error",
+    "result": {
+      "remediation_reports": [],
+      "summary": {
+        "total_breaches_analyzed": 0,
+        "immediate_actions_required": 0,
+        "estimated_total_remediation_cost": 0,
+        "recommended_next_steps": [
+          "No breach data detected. Please input breach data from the Compliance Checker Agent for analysis."
+        ]
+      }
+    },
+    "metadata": {
+      "agent_name": "Remediation Analyst Agent",
+      "timestamp": "2024-06-14T20:46:46Z"
+    }
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-01-14T16:30:23.476397",
+  "test_message_used": "Analyze this sample data for testing",
+  "actual_test_response": {
+    "status": "error",
+    "result": {
+      "remediation_reports": [],
+      "summary": {
+        "total_breaches_analyzed": 0,
+        "immediate_actions_required": 0,
+        "estimated_total_remediation_cost": 0,
+        "recommended_next_steps": [
+          "No breach data detected. Please input breach data from the Compliance Checker Agent for analysis."
+        ]
+      }
+    },
+    "metadata": {
+      "agent_name": "Remediation Analyst Agent",
+      "timestamp": "2024-06-14T20:46:46Z"
+    }
+  }
+}

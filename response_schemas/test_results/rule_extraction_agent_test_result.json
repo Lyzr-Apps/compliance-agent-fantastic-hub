@@ -1,0 +1,240 @@
+{
+  "agent_name": "Rule Extraction Agent",
+  "agent_id": "6967c2d5f038ff7259fe2ac5",
+  "test_message": "Extract all compliance rules from the uploaded investment guidelines. Include limits, restrictions, thresholds, and flag any ambiguous language.",
+  "expected_purpose": "parser",
+  "timestamp": "2026-01-14T16:26:39.398558",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "success",
+    "result": {
+      "extracted_rules": [
+        {
+          "rule_id": "rule_001",
+          "category": "performance_target",
+          "description": "The strategy aims to provide a total return that exceeds the Custom Account Benchmark by 60 basis points (gross of fees) per annum over a full market cycle.",
+          "threshold": 60,
+          "threshold_unit": "bps",
+          "severity": "soft_breach",
+          "applicable_to": "Overall portfolio performance",
+          "source_section": "I. Investment Objective"
+        },
+        {
+          "rule_id": "rule_002",
+          "category": "tracking_error",
+          "description": "Target long-term ex-ante tracking error of up to 100-150 basis points to the Account Benchmark per annum.",
+          "threshold": 150,
+          "threshold_unit": "bps",
+          "severity": "soft_breach",
+          "applicable_to": "Tracking error (proprietary risk model)",
+          "source_section": "I. Investment Objective"
+        },
+        {
+          "rule_id": "rule_003",
+          "category": "investment_universe",
+          "description": "All instruments must satisfy UCITS regulations.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "All invested instruments",
+          "source_section": "III. Eligible Investments"
+        },
+        {
+          "rule_id": "rule_004",
+          "category": "security_type",
+          "description": "Permitted security types include fixed and floating rate, senior and subordinated debt obligations issued or guaranteed by corporations, sovereigns, agencies, supranationals, GSEs, and government-guaranteed entities.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Security types",
+          "source_section": "III. Eligible Investments"
+        },
+        {
+          "rule_id": "rule_005",
+          "category": "benchmark_composition",
+          "description": "The Custom Account Benchmark is a blend: 48.12% Bloomberg Global Aggregate Corporate Bond Index, 42.31% Citi World Government Bond Ex CNY, 9.57% Bloomberg US Corporate High Yield 2% Issuer Capped Index.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Custom Account Benchmark",
+          "source_section": "II. Custom Account Benchmark"
+        },
+        {
+          "rule_id": "rule_006",
+          "category": "credit_rating",
+          "description": "Credit ratings will be measured using middle of three or lower of two in case of split ratings between S&P, Moody\u2019s and Fitch.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Eligible securities",
+          "source_section": "III. Eligible Investments"
+        },
+        {
+          "rule_id": "rule_007",
+          "category": "derivatives_restriction",
+          "description": "FX Forwards may be used for hedging purposes only.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Derivatives/FX Forwards",
+          "source_section": "IV. Derivatives"
+        },
+        {
+          "rule_id": "rule_008",
+          "category": "issuer_exclusion",
+          "description": "Securities issued by companies in the ESG exclusion list (Appendix I) are ineligible.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Securities from excluded issuers",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_009",
+          "category": "country_restriction",
+          "description": "Any securities not included in the eligible country list (Appendix II) by country of risk are ineligible.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Country of risk",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_010",
+          "category": "ineligible_investment",
+          "description": "Direct investment into securitizations in scope of EU regulation 2017/2402 is not permitted.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Direct securitizations",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_011",
+          "category": "funds_restriction",
+          "description": "Investment in funds and ETFs is not permitted.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Funds and ETFs",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_012",
+          "category": "ineligible_asset_class",
+          "description": "Investment in physical commodities, commodity futures, physical real estate properties, and bank loans is not permitted.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Commodities, real estate, bank loans",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_013",
+          "category": "issuer_exclusion",
+          "description": "No purchase or sale of securities from Goldman Sachs Group Inc. or affiliates, or any company named \"Goldman Sachs\".",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Issuer exclusion",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_014",
+          "category": "equity_restriction",
+          "description": "Equity investment is prohibited unless received via corporate action/restructure event.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Equities",
+          "source_section": "V. Ineligible Investments"
+        },
+        {
+          "rule_id": "rule_015",
+          "category": "cash_limit",
+          "description": "Maximum settled date cash is 10% of account value under normal circumstances.",
+          "threshold": 10,
+          "threshold_unit": "%",
+          "severity": "hard_breach",
+          "applicable_to": "Cash position",
+          "source_section": "VI. Investment Constraints"
+        },
+        {
+          "rule_id": "rule_016",
+          "category": "currency_hedging",
+          "description": "Currency deviation from the benchmark must be within \u00b10.5%. Account must be 100% hedged with permitted drift.",
+          "threshold": 0.5,
+          "threshold_unit": "%",
+          "severity": "hard_breach",
+          "applicable_to": "Currency exposure",
+          "source_section": "VI. Investment Constraints"
+        },
+        {
+          "rule_id": "rule_017",
+          "category": "leverage_restriction",
+          "description": "Leverage is not permitted.",
+          "threshold": 0,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Leverage",
+          "source_section": "VI. Investment Constraints"
+        },
+        {
+          "rule_id": "rule_018",
+          "category": "securities_lending",
+          "description": "Securities lending is not permitted.",
+          "threshold": 0,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Securities lending",
+          "source_section": "VI. Investment Constraints"
+        },
+        {
+          "rule_id": "rule_019",
+          "category": "passive_breach_management",
+          "description": "If the account deviates from a constraint limit due to passive breach, the manager must notify MAS as soon as practical and use best efforts to bring the account into compliance within 10 business days. Passive breaches do not constitute a breach.",
+          "threshold": 10,
+          "threshold_unit": "business_days",
+          "severity": "soft_breach",
+          "applicable_to": "Breaches due to external events",
+          "source_section": "VI. Investment Constraints"
+        },
+        {
+          "rule_id": "rule_020",
+          "category": "active_breach_management",
+          "description": "In case of an active breach, the Advisor must promptly notify the client and restore compliance as soon as practicable.",
+          "threshold": null,
+          "threshold_unit": null,
+          "severity": "hard_breach",
+          "applicable_to": "Active guideline breaches",
+          "source_section": "VI. Investment Constraints"
+        }
+      ],
+      "ambiguous_rules": [
+        {
+          "text": "The list of companies may be updated in writing as agreed between parties. GS may not be able to readily sell securities that are intended for exclusion from the Portfolio (for example, due to liquidity issues or for other reasons outside of GS\u2019s control), however, will seek to divest as soon as reasonably possible in an orderly manner and in the best interests of investors.",
+          "reason": "Phrases like 'as soon as reasonably possible' and 'orderly manner' are subjective and lack specific timelines, which may be open to interpretation.",
+          "requires_review": true
+        },
+        {
+          "text": "If the Account deviates from one of the constraint limits Fixed Income shall notify MAS of such passive breach as soon as practical, and shall use reasonable best efforts to bring the account into compliance within ten (10) Business Days.",
+          "reason": "Terms 'as soon as practical' and 'reasonable best efforts' are vague. The 10 days is clear, but earlier steps are not specifically defined.",
+          "requires_review": true
+        },
+        {
+          "text": "Passive breaches will not constitute a breach of the investment guidelines.",
+          "reason": "Lack of definition on what exactly constitutes 'passive breach' may cause interpretation differences.",
+          "requires_review": true
+        }
+      ],
+      "total_rules_extracted": 20,
+      "confidence_score": 0.79
+    },
+    "metadata": {
+      "agent_name": "Rule Extraction Agent",
+      "timestamp": "2024-06-15T13:57:00Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"success\",\n  \"result\": {\n    \"extracted_rules\": [\n      {\n        \"rule_id\": \"rule_001\",\n        \"category\": \"performance_target\",\n        \"description\": \"The strategy aims to provide a total return that exceeds the Custom Account Benchmark by 60 basis points (gross of fees) per annum over a full market cycle.\",\n        \"threshold\": 60,\n        \"threshold_unit\": \"bps\",\n        \"severity\": \"soft_breach\",\n        \"applicable_to\": \"Overall portfolio performance\",\n        \"source_section\": \"I. Investment Objective\"\n      },\n      {\n        \"rule_id\": \"rule_002\",\n        \"category\": \"tracking_error\",\n        \"description\": \"Target long-term ex-ante tracking error of up to 100-150 basis points to the Account Benchmark per annum.\",\n        \"threshold\": 150,\n        \"threshold_unit\": \"bps\",\n        \"severity\": \"soft_breach\",\n        \"applicable_to\": \"Tracking error (proprietary risk model)\",\n        \"source_section\": \"I. Investment Objective\"\n      },\n      {\n        \"rule_id\": \"rule_003\",\n        \"category\": \"investment_universe\",\n        \"description\": \"All instruments must satisfy UCITS regulations.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"All invested instruments\",\n        \"source_section\": \"III. Eligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_004\",\n        \"category\": \"security_type\",\n        \"description\": \"Permitted security types include fixed and floating rate, senior and subordinated debt obligations issued or guaranteed by corporations, sovereigns, agencies, supranationals, GSEs, and government-guaranteed entities.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Security types\",\n        \"source_section\": \"III. Eligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_005\",\n        \"category\": \"benchmark_composition\",\n        \"description\": \"The Custom Account Benchmark is a blend: 48.12% Bloomberg Global Aggregate Corporate Bond Index, 42.31% Citi World Government Bond Ex CNY, 9.57% Bloomberg US Corporate High Yield 2% Issuer Capped Index.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Custom Account Benchmark\",\n        \"source_section\": \"II. Custom Account Benchmark\"\n      },\n      {\n        \"rule_id\": \"rule_006\",\n        \"category\": \"credit_rating\",\n        \"description\": \"Credit ratings will be measured using middle of three or lower of two in case of split ratings between S&P, Moody\u2019s and Fitch.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Eligible securities\",\n        \"source_section\": \"III. Eligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_007\",\n        \"category\": \"derivatives_restriction\",\n        \"description\": \"FX Forwards may be used for hedging purposes only.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Derivatives/FX Forwards\",\n        \"source_section\": \"IV. Derivatives\"\n      },\n      {\n        \"rule_id\": \"rule_008\",\n        \"category\": \"issuer_exclusion\",\n        \"description\": \"Securities issued by companies in the ESG exclusion list (Appendix I) are ineligible.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Securities from excluded issuers\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_009\",\n        \"category\": \"country_restriction\",\n        \"description\": \"Any securities not included in the eligible country list (Appendix II) by country of risk are ineligible.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Country of risk\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_010\",\n        \"category\": \"ineligible_investment\",\n        \"description\": \"Direct investment into securitizations in scope of EU regulation 2017/2402 is not permitted.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Direct securitizations\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_011\",\n        \"category\": \"funds_restriction\",\n        \"description\": \"Investment in funds and ETFs is not permitted.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Funds and ETFs\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_012\",\n        \"category\": \"ineligible_asset_class\",\n        \"description\": \"Investment in physical commodities, commodity futures, physical real estate properties, and bank loans is not permitted.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Commodities, real estate, bank loans\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_013\",\n        \"category\": \"issuer_exclusion\",\n        \"description\": \"No purchase or sale of securities from Goldman Sachs Group Inc. or affiliates, or any company named \\\"Goldman Sachs\\\".\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Issuer exclusion\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_014\",\n        \"category\": \"equity_restriction\",\n        \"description\": \"Equity investment is prohibited unless received via corporate action/restructure event.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Equities\",\n        \"source_section\": \"V. Ineligible Investments\"\n      },\n      {\n        \"rule_id\": \"rule_015\",\n        \"category\": \"cash_limit\",\n        \"description\": \"Maximum settled date cash is 10% of account value under normal circumstances.\",\n        \"threshold\": 10,\n        \"threshold_unit\": \"%\",\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Cash position\",\n        \"source_section\": \"VI. Investment Constraints\"\n      },\n      {\n        \"rule_id\": \"rule_016\",\n        \"category\": \"currency_hedging\",\n        \"description\": \"Currency deviation from the benchmark must be within \u00b10.5%. Account must be 100% hedged with permitted drift.\",\n        \"threshold\": 0.5,\n        \"threshold_unit\": \"%\",\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Currency exposure\",\n        \"source_section\": \"VI. Investment Constraints\"\n      },\n      {\n        \"rule_id\": \"rule_017\",\n        \"category\": \"leverage_restriction\",\n        \"description\": \"Leverage is not permitted.\",\n        \"threshold\": 0,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Leverage\",\n        \"source_section\": \"VI. Investment Constraints\"\n      },\n      {\n        \"rule_id\": \"rule_018\",\n        \"category\": \"securities_lending\",\n        \"description\": \"Securities lending is not permitted.\",\n        \"threshold\": 0,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Securities lending\",\n        \"source_section\": \"VI. Investment Constraints\"\n      },\n      {\n        \"rule_id\": \"rule_019\",\n        \"category\": \"passive_breach_management\",\n        \"description\": \"If the account deviates from a constraint limit due to passive breach, the manager must notify MAS as soon as practical and use best efforts to bring the account into compliance within 10 business days. Passive breaches do not constitute a breach.\",\n        \"threshold\": 10,\n        \"threshold_unit\": \"business_days\",\n        \"severity\": \"soft_breach\",\n        \"applicable_to\": \"Breaches due to external events\",\n        \"source_section\": \"VI. Investment Constraints\"\n      },\n      {\n        \"rule_id\": \"rule_020\",\n        \"category\": \"active_breach_management\",\n        \"description\": \"In case of an active breach, the Advisor must promptly notify the client and restore compliance as soon as practicable.\",\n        \"threshold\": null,\n        \"threshold_unit\": null,\n        \"severity\": \"hard_breach\",\n        \"applicable_to\": \"Active guideline breaches\",\n        \"source_section\": \"VI. Investment Constraints\"\n      }\n    ],\n    \"ambiguous_rules\": [\n      {\n        \"text\": \"The list of companies may be updated in writing as agreed between parties. GS may not be able to readily sell securities that are intended for exclusion from the Portfolio (for example, due to liquidity issues or for other reasons outside of GS\u2019s control), however, will seek to divest as soon as reasonably possible in an orderly manner and in the best interests of investors.\",\n        \"reason\": \"Phrases like 'as soon as reasonably possible' and 'orderly manner' are subjective and lack specific timelines, which may be open to interpretation.\",\n        \"requires_review\": true\n      },\n      {\n        \"text\": \"If the Account deviates from one of the constraint limits Fixed Income shall notify MAS of such passive breach as soon as practical, and shall use reasonable best efforts to bring the account into compliance within ten (10) Business Days.\",\n        \"reason\": \"Terms 'as soon as practical' and 'reasonable best efforts' are vague. The 10 days is clear, but earlier steps are not specifically defined.\",\n        \"requires_review\": true\n      },\n      {\n        \"text\": \"Passive breaches will not constitute a breach of the investment guidelines.\",\n        \"reason\": \"Lack of definition on what exactly constitutes 'passive breach' may cause interpretation differences.\",\n        \"requires_review\": true\n      }\n    ],\n    \"total_rules_extracted\": 20,\n    \"confidence_score\": 0.79\n  },\n  \"metadata\": {\n    \"agent_name\": \"Rule Extraction Agent\",\n    \"timestamp\": \"2024-06-15T13:57:00Z\"\n  }\n}"
+}

@@ -1,0 +1,106 @@
+{
+  "workflow_name": "GSAM Compliance Workflow",
+  "workflow_type": "manager-subagent",
+  "created_at": "2026-01-14T00:00:00Z",
+  "agents": {
+    "manager": {
+      "agent_id": "6967c339f038ff7259fe2ace",
+      "name": "Compliance Coordinator Agent",
+      "type": "manager",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "manages": [
+        "6967c2d5f038ff7259fe2ac5",
+        "6967c2edf038ff7259fe2ac6",
+        "6967c30af038ff7259fe2aca"
+      ]
+    },
+    "sub_agents": [
+      {
+        "agent_id": "6967c2d5f038ff7259fe2ac5",
+        "name": "Rule Extraction Agent",
+        "type": "sub-agent",
+        "provider": "openai",
+        "model": "gpt-4.1",
+        "temperature": 0.2,
+        "top_p": 1,
+        "has_knowledge_base": true,
+        "rag_id": "6967c2bd091c20f43ed3495d",
+        "rag_name": "gsaminvestmentguidelinesknowledgebaseru1x"
+      },
+      {
+        "agent_id": "6967c2edf038ff7259fe2ac6",
+        "name": "Compliance Checker Agent",
+        "type": "sub-agent",
+        "provider": "openai",
+        "model": "gpt-4.1",
+        "temperature": 0.2,
+        "top_p": 1,
+        "has_knowledge_base": false
+      },
+      {
+        "agent_id": "6967c30af038ff7259fe2aca",
+        "name": "Remediation Analyst Agent",
+        "type": "sub-agent",
+        "provider": "openai",
+        "model": "gpt-4.1",
+        "temperature": 0.4,
+        "top_p": 1,
+        "has_knowledge_base": false
+      }
+    ]
+  },
+  "knowledge_bases": [
+    {
+      "rag_id": "6967c2bd091c20f43ed3495d",
+      "rag_name": "gsaminvestmentguidelinesknowledgebaseru1x",
+      "name": "GSAM Investment Guidelines Knowledge Base",
+      "description": "Contains Investment Guideline PDFs (IMA documents) for extracting structured compliance rules",
+      "used_by": "Rule Extraction Agent",
+      "ingested_files": [
+        {
+          "filename": "IMA_eg1.pdf",
+          "url": "https://asset.lyzr.app/DVdorrqe"
+        },
+        {
+          "filename": "IMA_eg2.pdf",
+          "url": "https://asset.lyzr.app/6dvY81gP"
+        },
+        {
+          "filename": "IMA_eg3.pdf",
+          "url": "https://asset.lyzr.app/LT23p3gD"
+        }
+      ]
+    }
+  ],
+  "response_schemas": [
+    {
+      "agent_name": "Rule Extraction Agent",
+      "schema_file": "response_schemas/rule_extraction_agent_response.json",
+      "tested": true
+    },
+    {
+      "agent_name": "Compliance Checker Agent",
+      "schema_file": "response_schemas/compliance_checker_agent_response.json",
+      "tested": true
+    },
+    {
+      "agent_name": "Remediation Analyst Agent",
+      "schema_file": "response_schemas/remediation_analyst_agent_response.json",
+      "tested": true
+    },
+    {
+      "agent_name": "Compliance Coordinator Agent",
+      "schema_file": "response_schemas/compliance_coordinator_agent_response.json",
+      "tested": false
+    }
+  ],
+  "workflow_status": "complete",
+  "next_steps": [
+    "Agent testing will be handled by agent_testing sub-agent",
+    "UI generation will be handled by UI generator",
+    "All agents are ready for integration"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "workflow": {
+    "name": "GSAM Compliance Workflow",
+    "type": "manager-subagent",
+    "nodes": [
+      {
+        "id": "input_node",
+        "type": "Input",
+        "label": "Compliance Check Upload",
+        "nodeCategory": "input",
+        "position": {"x": 100, "y": 200}
+      },
+      {
+        "id": "compliance_coordinator",
+        "type": "Agent",
+        "label": "Compliance Coordinator Agent",
+        "nodeCategory": "agent",
+        "agentId": "6967c339f038ff7259fe2ace",
+        "agentType": "manager",
+        "position": {"x": 400, "y": 200}
+      },
+      {
+        "id": "rule_extraction",
+        "type": "Agent",
+        "label": "Rule Extraction Agent",
+        "nodeCategory": "agent",
+        "agentId": "6967c2d5f038ff7259fe2ac5",
+        "agentType": "sub-agent",
+        "position": {"x": 700, "y": 100}
+      },
+      {
+        "id": "compliance_checker",
+        "type": "Agent",
+        "label": "Compliance Checker Agent",
+        "nodeCategory": "agent",
+        "agentId": "6967c2edf038ff7259fe2ac6",
+        "agentType": "sub-agent",
+        "position": {"x": 700, "y": 200}
+      },
+      {
+        "id": "remediation_analyst",
+        "type": "Agent",
+        "label": "Remediation Analyst Agent",
+        "nodeCategory": "agent",
+        "agentId": "6967c30af038ff7259fe2aca",
+        "agentType": "sub-agent",
+        "position": {"x": 700, "y": 300}
+      },
+      {
+        "id": "output_node",
+        "type": "Output",
+        "label": "Compliance Dashboard",
+        "nodeCategory": "end",
+        "position": {"x": 1000, "y": 200}
+      }
+    ],
+    "edges": [
+      {"source": "input_node", "target": "compliance_coordinator"},
+      {"source": "compliance_coordinator", "target": "rule_extraction"},
+      {"source": "compliance_coordinator", "target": "compliance_checker"},
+      {"source": "compliance_coordinator", "target": "remediation_analyst"},
+      {"source": "rule_extraction", "target": "output_node"},
+      {"source": "compliance_checker", "target": "output_node"},
+      {"source": "remediation_analyst", "target": "output_node"}
+    ]
+  },
+  "agents": {
+    "6967c339f038ff7259fe2ace": {
+      "name": "Compliance Coordinator Agent",
+      "type": "manager",
+      "description": "Orchestrates the compliance check workflow",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "managed_agents": [
+        "6967c2d5f038ff7259fe2ac5",
+        "6967c2edf038ff7259fe2ac6",
+        "6967c30af038ff7259fe2aca"
+      ]
+    },
+    "6967c2d5f038ff7259fe2ac5": {
+      "name": "Rule Extraction Agent",
+      "type": "sub-agent",
+      "description": "Parses Investment Guideline PDFs to extract structured compliance rules",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.2,
+      "top_p": 1,
+      "has_knowledge_base": true,
+      "rag_id": "6967c2bd091c20f43ed3495d"
+    },
+    "6967c2edf038ff7259fe2ac6": {
+      "name": "Compliance Checker Agent",
+      "type": "sub-agent",
+      "description": "Compares extracted rules against portfolio database",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.2,
+      "top_p": 1
+    },
+    "6967c30af038ff7259fe2aca": {
+      "name": "Remediation Analyst Agent",
+      "type": "sub-agent",
+      "description": "Generates root cause analysis and remediation recommendations",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.4,
+      "top_p": 1
+    }
+  }
+}
