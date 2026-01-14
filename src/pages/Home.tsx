@@ -12,7 +12,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import {
   Upload, FileText, AlertCircle, CheckCircle, TrendingUp, TrendingDown,
-  AlertTriangle, Search, Download, RefreshCw, Loader2, XCircle, FileCheck
+  AlertTriangle, Search, Download, RefreshCw, Loader2, XCircle, FileCheck,
+  Database, Filter, ArrowUpDown, DollarSign, PieChart
 } from 'lucide-react'
 
 // =============================================================================
@@ -726,6 +727,489 @@ function VersionComparisonPage() {
   )
 }
 
+// Portfolio Database Types
+interface PortfolioHolding {
+  id: string
+  portfolio_id: string
+  portfolio_name: string
+  security_name: string
+  ticker: string
+  isin: string
+  asset_class: 'Equity' | 'Fixed Income' | 'Alternatives' | 'Cash'
+  position_size: number
+  weight: number
+  rating?: string
+  country: string
+  region: string
+  sector: string
+}
+
+interface PortfolioSummary {
+  portfolio_id: string
+  portfolio_name: string
+  total_aum: number
+  asset_allocation: {
+    Equity: number
+    'Fixed Income': number
+    Alternatives: number
+    Cash: number
+  }
+}
+
+function PortfolioDatabasePage() {
+  const [selectedPortfolio, setSelectedPortfolio] = useState('ABC')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [assetClassFilter, setAssetClassFilter] = useState<string>('All')
+  const [sortColumn, setSortColumn] = useState<string>('weight')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+
+  // Dummy portfolio data - realistic holdings
+  const portfolioData: Record<string, PortfolioHolding[]> = {
+    ABC: [
+      // Equities (45% - BREACHING 40% LIMIT!)
+      { id: '1', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Apple Inc', ticker: 'AAPL', isin: 'US0378331005', asset_class: 'Equity', position_size: 850000, weight: 8.5, country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '2', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Microsoft Corp', ticker: 'MSFT', isin: 'US5949181045', asset_class: 'Equity', position_size: 750000, weight: 7.5, country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '3', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Amazon.com Inc', ticker: 'AMZN', isin: 'US0231351067', asset_class: 'Equity', position_size: 650000, weight: 6.5, country: 'United States', region: 'North America', sector: 'Consumer Discretionary' },
+      { id: '4', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Alphabet Inc Class A', ticker: 'GOOGL', isin: 'US02079K3059', asset_class: 'Equity', position_size: 600000, weight: 6.0, country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '5', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'NVIDIA Corp', ticker: 'NVDA', isin: 'US67066G1040', asset_class: 'Equity', position_size: 550000, weight: 5.5, country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '6', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Tesla Inc', ticker: 'TSLA', isin: 'US88160R1014', asset_class: 'Equity', position_size: 450000, weight: 4.5, country: 'United States', region: 'North America', sector: 'Consumer Discretionary' },
+      { id: '7', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Johnson & Johnson', ticker: 'JNJ', isin: 'US4781601046', asset_class: 'Equity', position_size: 400000, weight: 4.0, country: 'United States', region: 'North America', sector: 'Healthcare' },
+      { id: '8', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'JPMorgan Chase & Co', ticker: 'JPM', isin: 'US46625H1005', asset_class: 'Equity', position_size: 250000, weight: 2.5, country: 'United States', region: 'North America', sector: 'Financials' },
+
+      // Fixed Income (35%)
+      { id: '9', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'US Treasury 10Y', ticker: 'T 2.5 05/15/2034', isin: 'US912810TW65', asset_class: 'Fixed Income', position_size: 900000, weight: 9.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '10', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'US Treasury 5Y', ticker: 'T 2.0 04/30/2029', isin: 'US912810TE12', asset_class: 'Fixed Income', position_size: 800000, weight: 8.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '11', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'ABC Corp 3.5% 2029', ticker: 'ABC35-29', isin: 'US0001231234', asset_class: 'Fixed Income', position_size: 700000, weight: 7.0, rating: 'BBB', country: 'United States', region: 'North America', sector: 'Industrials' },
+      { id: '12', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Goldman Sachs Group 2.625% 2031', ticker: 'GS2625-31', isin: 'US38141GXX98', asset_class: 'Fixed Income', position_size: 600000, weight: 6.0, rating: 'A-', country: 'United States', region: 'North America', sector: 'Financials' },
+      { id: '13', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Morgan Stanley 4.0% 2030', ticker: 'MS4-30', isin: 'US6174468616', asset_class: 'Fixed Income', position_size: 500000, weight: 5.0, rating: 'A', country: 'United States', region: 'North America', sector: 'Financials' },
+
+      // Alternatives (8%)
+      { id: '14', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Blackstone Real Estate Fund', ticker: 'BREP', isin: 'US09260D1072', asset_class: 'Alternatives', position_size: 400000, weight: 4.0, country: 'United States', region: 'North America', sector: 'Real Estate' },
+      { id: '15', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'KKR Infrastructure Fund', ticker: 'KKRI', isin: 'US48251W1045', asset_class: 'Alternatives', position_size: 400000, weight: 4.0, country: 'United States', region: 'North America', sector: 'Infrastructure' },
+
+      // Cash (12% - BREACHING 10% LIMIT!)
+      { id: '16', portfolio_id: 'ABC', portfolio_name: 'Portfolio ABC', security_name: 'Cash & Equivalents', ticker: 'CASH', isin: 'CASH-USD', asset_class: 'Cash', position_size: 1230000, weight: 12.3, country: 'United States', region: 'North America', sector: 'Cash' },
+    ],
+    XYZ: [
+      // Equities (35%)
+      { id: '17', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Meta Platforms Inc', ticker: 'META', isin: 'US30303M1027', asset_class: 'Equity', position_size: 600000, weight: 7.5, country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '18', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Berkshire Hathaway', ticker: 'BRK.B', isin: 'US0846707026', asset_class: 'Equity', position_size: 550000, weight: 6.9, country: 'United States', region: 'North America', sector: 'Financials' },
+      { id: '19', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Visa Inc', ticker: 'V', isin: 'US92826C8394', asset_class: 'Equity', position_size: 500000, weight: 6.3, country: 'United States', region: 'North America', sector: 'Financials' },
+      { id: '20', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Procter & Gamble', ticker: 'PG', isin: 'US7427181091', asset_class: 'Equity', position_size: 450000, weight: 5.6, country: 'United States', region: 'North America', sector: 'Consumer Staples' },
+      { id: '21', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Coca-Cola Company', ticker: 'KO', isin: 'US1912161007', asset_class: 'Equity', position_size: 400000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Consumer Staples' },
+      { id: '22', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Pfizer Inc', ticker: 'PFE', isin: 'US7170811035', asset_class: 'Equity', position_size: 300000, weight: 3.8, country: 'United States', region: 'North America', sector: 'Healthcare' },
+
+      // Fixed Income (50%)
+      { id: '23', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'US Treasury 30Y', ticker: 'T 3.0 08/15/2054', isin: 'US912810TZ98', asset_class: 'Fixed Income', position_size: 1200000, weight: 15.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '24', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'US Treasury 10Y', ticker: 'T 2.75 02/15/2034', isin: 'US912810TA24', asset_class: 'Fixed Income', position_size: 1000000, weight: 12.5, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '25', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Apple Inc 3.0% 2032', ticker: 'AAPL3-32', isin: 'US037833DK65', asset_class: 'Fixed Income', position_size: 800000, weight: 10.0, rating: 'AA+', country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '26', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Microsoft Corp 2.4% 2031', ticker: 'MSFT24-31', isin: 'US594918BY90', asset_class: 'Fixed Income', position_size: 600000, weight: 7.5, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Technology' },
+      { id: '27', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'JPMorgan 3.5% 2030', ticker: 'JPM35-30', isin: 'US46647PCJ46', asset_class: 'Fixed Income', position_size: 400000, weight: 5.0, rating: 'A', country: 'United States', region: 'North America', sector: 'Financials' },
+
+      // Alternatives (10%)
+      { id: '28', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Carlyle Global Infrastructure', ticker: 'CGIF', isin: 'US14309L1089', asset_class: 'Alternatives', position_size: 500000, weight: 6.3, country: 'United States', region: 'North America', sector: 'Infrastructure' },
+      { id: '29', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Apollo Credit Fund', ticker: 'ACF', isin: 'US03769M1080', asset_class: 'Alternatives', position_size: 300000, weight: 3.8, country: 'United States', region: 'North America', sector: 'Credit' },
+
+      // Cash (5%)
+      { id: '30', portfolio_id: 'XYZ', portfolio_name: 'Portfolio XYZ', security_name: 'Cash & Equivalents', ticker: 'CASH', isin: 'CASH-USD', asset_class: 'Cash', position_size: 400000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Cash' },
+    ],
+    DEF: [
+      // Conservative portfolio - mostly bonds
+      { id: '31', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'US Treasury 20Y', ticker: 'T 2.875 05/15/2043', isin: 'US912810RB26', asset_class: 'Fixed Income', position_size: 2500000, weight: 25.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '32', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'US Treasury 10Y', ticker: 'T 2.5 02/28/2034', isin: 'US912810RE60', asset_class: 'Fixed Income', position_size: 2000000, weight: 20.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '33', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'US Treasury 5Y', ticker: 'T 2.0 11/30/2028', isin: 'US912810RC97', asset_class: 'Fixed Income', position_size: 1500000, weight: 15.0, rating: 'AAA', country: 'United States', region: 'North America', sector: 'Government' },
+      { id: '34', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Verizon 4.125% 2030', ticker: 'VZ4125-30', isin: 'US92343VGE75', asset_class: 'Fixed Income', position_size: 1000000, weight: 10.0, rating: 'BBB+', country: 'United States', region: 'North America', sector: 'Telecommunications' },
+      { id: '35', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'AT&T 3.65% 2029', ticker: 'T365-29', isin: 'US00206RCL60', asset_class: 'Fixed Income', position_size: 800000, weight: 8.0, rating: 'BBB', country: 'United States', region: 'North America', sector: 'Telecommunications' },
+      { id: '36', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Walmart 2.95% 2032', ticker: 'WMT295-32', isin: 'US931142EB49', asset_class: 'Fixed Income', position_size: 700000, weight: 7.0, rating: 'AA', country: 'United States', region: 'North America', sector: 'Consumer Staples' },
+
+      // Equities (15%)
+      { id: '37', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Johnson & Johnson', ticker: 'JNJ', isin: 'US4781601046', asset_class: 'Equity', position_size: 500000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Healthcare' },
+      { id: '38', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Procter & Gamble', ticker: 'PG', isin: 'US7427181091', asset_class: 'Equity', position_size: 500000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Consumer Staples' },
+      { id: '39', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Coca-Cola Company', ticker: 'KO', isin: 'US1912161007', asset_class: 'Equity', position_size: 500000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Consumer Staples' },
+
+      // Cash (5%)
+      { id: '40', portfolio_id: 'DEF', portfolio_name: 'Portfolio DEF', security_name: 'Cash & Equivalents', ticker: 'CASH', isin: 'CASH-USD', asset_class: 'Cash', position_size: 500000, weight: 5.0, country: 'United States', region: 'North America', sector: 'Cash' },
+    ],
+  }
+
+  // Calculate portfolio summary
+  const calculatePortfolioSummary = (portfolioId: string): PortfolioSummary => {
+    const holdings = portfolioData[portfolioId] || []
+    const total_aum = holdings.reduce((sum, h) => sum + h.position_size, 0)
+
+    const allocation = {
+      Equity: 0,
+      'Fixed Income': 0,
+      Alternatives: 0,
+      Cash: 0,
+    }
+
+    holdings.forEach(h => {
+      allocation[h.asset_class] += h.weight
+    })
+
+    return {
+      portfolio_id: portfolioId,
+      portfolio_name: `Portfolio ${portfolioId}`,
+      total_aum,
+      asset_allocation: allocation,
+    }
+  }
+
+  const summary = calculatePortfolioSummary(selectedPortfolio)
+  const holdings = portfolioData[selectedPortfolio] || []
+
+  // Filter and sort holdings
+  const filteredHoldings = holdings
+    .filter(h => {
+      const matchesSearch =
+        h.security_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        h.ticker.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        h.sector.toLowerCase().includes(searchTerm.toLowerCase())
+
+      const matchesFilter = assetClassFilter === 'All' || h.asset_class === assetClassFilter
+
+      return matchesSearch && matchesFilter
+    })
+    .sort((a, b) => {
+      const aVal = a[sortColumn as keyof PortfolioHolding]
+      const bVal = b[sortColumn as keyof PortfolioHolding]
+
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return sortDirection === 'asc' ? aVal - bVal : bVal - aVal
+      }
+
+      return 0
+    })
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortColumn(column)
+      setSortDirection('desc')
+    }
+  }
+
+  const handleExport = () => {
+    const csvContent = [
+      ['Portfolio', 'Security Name', 'Ticker', 'ISIN', 'Asset Class', 'Position Size', 'Weight %', 'Rating', 'Country', 'Region', 'Sector'].join(','),
+      ...filteredHoldings.map(h =>
+        [h.portfolio_name, h.security_name, h.ticker, h.isin, h.asset_class, h.position_size, h.weight, h.rating || '', h.country, h.region, h.sector].join(',')
+      )
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `portfolio_${selectedPortfolio}_holdings.csv`
+    a.click()
+  }
+
+  const getAssetClassColor = (assetClass: string) => {
+    switch (assetClass) {
+      case 'Equity':
+        return 'bg-blue-100 text-blue-800 border-blue-200'
+      case 'Fixed Income':
+        return 'bg-green-100 text-green-800 border-green-200'
+      case 'Alternatives':
+        return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'Cash':
+        return 'bg-gray-100 text-gray-800 border-gray-200'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200'
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Portfolio Summary Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card className="border-2 border-blue-200">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Total AUM</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">
+              ${(summary.total_aum / 1000000).toFixed(2)}M
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-blue-100">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Equity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-700">
+              {summary.asset_allocation.Equity.toFixed(1)}%
+            </div>
+            <Progress
+              value={summary.asset_allocation.Equity}
+              className="mt-2 h-2"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-green-100">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Fixed Income</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-700">
+              {summary.asset_allocation['Fixed Income'].toFixed(1)}%
+            </div>
+            <Progress
+              value={summary.asset_allocation['Fixed Income']}
+              className="mt-2 h-2"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-purple-100">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Alternatives</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-purple-700">
+              {summary.asset_allocation.Alternatives.toFixed(1)}%
+            </div>
+            <Progress
+              value={summary.asset_allocation.Alternatives}
+              className="mt-2 h-2"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-gray-100">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">Cash</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-700">
+              {summary.asset_allocation.Cash.toFixed(1)}%
+            </div>
+            <Progress
+              value={summary.asset_allocation.Cash}
+              className="mt-2 h-2"
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Asset Allocation Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <PieChart className="w-5 h-5" />
+            Asset Allocation Breakdown
+          </CardTitle>
+          <CardDescription>{summary.portfolio_name}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {Object.entries(summary.asset_allocation).map(([assetClass, percentage]) => (
+              <div key={assetClass} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">{assetClass}</span>
+                  <span className="text-sm font-bold">{percentage.toFixed(1)}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                  <div
+                    className={`h-full transition-all ${
+                      assetClass === 'Equity' ? 'bg-blue-600' :
+                      assetClass === 'Fixed Income' ? 'bg-green-600' :
+                      assetClass === 'Alternatives' ? 'bg-purple-600' :
+                      'bg-gray-600'
+                    }`}
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Compliance alerts */}
+          {summary.asset_allocation.Equity > 40 && (
+            <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
+              <div className="flex items-start">
+                <AlertTriangle className="w-5 h-5 text-red-600 mr-2 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-red-800">Equity Allocation Breach</p>
+                  <p className="text-xs text-red-700">
+                    Current equity allocation ({summary.asset_allocation.Equity.toFixed(1)}%) exceeds the 40% limit
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {summary.asset_allocation.Cash > 10 && (
+            <div className="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded">
+              <div className="flex items-start">
+                <AlertTriangle className="w-5 h-5 text-yellow-600 mr-2 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-yellow-800">Cash Allocation Warning</p>
+                  <p className="text-xs text-yellow-700">
+                    Current cash allocation ({summary.asset_allocation.Cash.toFixed(1)}%) exceeds the 10% limit
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Holdings Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Database className="w-5 h-5" />
+            Portfolio Holdings
+          </CardTitle>
+          <CardDescription>Detailed view of all portfolio positions</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Controls */}
+          <div className="flex flex-wrap gap-4">
+            {/* Portfolio Selector */}
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-sm font-medium mb-2 block">Portfolio</label>
+              <select
+                className="w-full p-2 border rounded-md bg-white"
+                value={selectedPortfolio}
+                onChange={(e) => setSelectedPortfolio(e.target.value)}
+              >
+                <option value="ABC">Portfolio ABC</option>
+                <option value="XYZ">Portfolio XYZ</option>
+                <option value="DEF">Portfolio DEF</option>
+              </select>
+            </div>
+
+            {/* Search */}
+            <div className="flex-1 min-w-[250px]">
+              <label className="text-sm font-medium mb-2 block">Search</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Search by name, ticker, sector..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            {/* Asset Class Filter */}
+            <div className="min-w-[180px]">
+              <label className="text-sm font-medium mb-2 block">Asset Class</label>
+              <select
+                className="w-full p-2 border rounded-md bg-white"
+                value={assetClassFilter}
+                onChange={(e) => setAssetClassFilter(e.target.value)}
+              >
+                <option value="All">All Classes</option>
+                <option value="Equity">Equity</option>
+                <option value="Fixed Income">Fixed Income</option>
+                <option value="Alternatives">Alternatives</option>
+                <option value="Cash">Cash</option>
+              </select>
+            </div>
+
+            {/* Export Button */}
+            <div className="flex items-end">
+              <Button onClick={handleExport} variant="outline">
+                <Download className="w-4 h-4 mr-2" />
+                Export CSV
+              </Button>
+            </div>
+          </div>
+
+          {/* Results Count */}
+          <div className="text-sm text-gray-500">
+            Showing {filteredHoldings.length} of {holdings.length} holdings
+          </div>
+
+          {/* Table */}
+          <ScrollArea className="h-[500px]">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Security Name</TableHead>
+                  <TableHead>Ticker</TableHead>
+                  <TableHead>ISIN</TableHead>
+                  <TableHead>Asset Class</TableHead>
+                  <TableHead
+                    className="text-right cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort('position_size')}
+                  >
+                    <div className="flex items-center justify-end gap-1">
+                      Position Size
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="text-right cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort('weight')}
+                  >
+                    <div className="flex items-center justify-end gap-1">
+                      Weight %
+                      <ArrowUpDown className="w-3 h-3" />
+                    </div>
+                  </TableHead>
+                  <TableHead>Rating</TableHead>
+                  <TableHead>Country</TableHead>
+                  <TableHead>Sector</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredHoldings.map((holding) => (
+                  <TableRow key={holding.id}>
+                    <TableCell className="font-medium">{holding.security_name}</TableCell>
+                    <TableCell className="font-mono text-sm">{holding.ticker}</TableCell>
+                    <TableCell className="font-mono text-xs text-gray-500">{holding.isin}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={getAssetClassColor(holding.asset_class)}>
+                        {holding.asset_class}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-sm">
+                      ${holding.position_size.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="font-semibold">{holding.weight.toFixed(1)}%</span>
+                        <div className="w-12 bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{ width: `${Math.min(holding.weight * 10, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {holding.rating ? (
+                        <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                          {holding.rating}
+                        </Badge>
+                      ) : (
+                        <span className="text-xs text-gray-400">N/A</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-sm">{holding.country}</TableCell>
+                    <TableCell className="text-sm">{holding.sector}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 function RulesLibraryPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
@@ -973,10 +1457,14 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
-          <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+          <TabsList className="grid grid-cols-5 w-full max-w-4xl">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
               Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="portfolio" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              Portfolio Database
             </TabsTrigger>
             <TabsTrigger value="agent" className="flex items-center gap-2">
               <Upload className="w-4 h-4" />
@@ -995,6 +1483,10 @@ export default function Home() {
           {/* Tab Content */}
           <TabsContent value="dashboard">
             <DashboardPage dashboard={dashboardData} />
+          </TabsContent>
+
+          <TabsContent value="portfolio">
+            <PortfolioDatabasePage />
           </TabsContent>
 
           <TabsContent value="agent">
